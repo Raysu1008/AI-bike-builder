@@ -1,0 +1,8 @@
+{
+  "band_id": "WHEELSET_AL_DURABLE",
+  "component": "wheelset",
+  "level": "Aluminum-durable",
+  "price": { "min": 700, "max": 1500, "currency": "CNY" },
+  "source": "benchmarks/seed",
+  "last_verified_at": "2026-02-18"
+}

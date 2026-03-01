@@ -1,0 +1,379 @@
+@import "tailwindcss";
+
+/* ── 亮色主题（默认） ── */
+:root {
+  --background: #f8f9fc;
+  --foreground: #1a1a2e;
+  --card-bg: #ffffff;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --secondary: #0ea5e9;
+  --accent: #f59e0b;
+  --success: #10b981;
+  --danger: #ef4444;
+  --border: #e2e8f0;
+  --muted: #64748b;
+  --radius: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+}
+
+/* ── 暗色主题：系统自动 ── */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #0f1117;
+    --foreground: #e8eaf0;
+    --card-bg: #1c1f2e;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-light: #1e1b4b;
+    --border: #2d3148;
+    --muted: #8892a4;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.45);
+    --shadow-lg: 0 10px 40px rgba(0,0,0,0.55);
+  }
+}
+
+/* ── 暗色主题：手动切换（class="dark"） ── */
+.dark {
+  --background: #0f1117;
+  --foreground: #e8eaf0;
+  --card-bg: #1c1f2e;
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-light: #1e1b4b;
+  --border: #2d3148;
+  --muted: #8892a4;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.35), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.45);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.55);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── 卡片基础样式 ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ── 按钮基础 ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(79,70,229,0.35);
+}
+.btn-secondary {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: #e0e7ff;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: #f1f5f9;
+  color: var(--foreground);
+}
+.btn-danger {
+  background: #fef2f2;
+  color: var(--danger);
+  border: 1px solid #fecaca;
+}
+.btn-success {
+  background: #ecfdf5;
+  color: var(--success);
+  border: 1px solid #a7f3d0;
+}
+
+/* ── 表单控件 ── */
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.form-input, .form-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  background: #fff;
+  color: var(--foreground);
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  appearance: none;
+}
+.form-input:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+}
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* ── 标签选择器 ── */
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.tag:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tag.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+/* ── 加载动画 ── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── 骨架屏 ── */
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* ── 分割线 ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+/* ── 徽章 ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-blue   { background: #dbeafe; color: #1d4ed8; }
+.badge-green  { background: #d1fae5; color: #065f46; }
+.badge-amber  { background: #fef3c7; color: #92400e; }
+.badge-red    { background: #fee2e2; color: #991b1b; }
+.badge-purple { background: var(--primary-light); color: var(--primary); }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   暗色模式：组件颜色覆盖（card-bg 已通过 CSS 变量自动适配，此处处理
+   写死了 #fff / #f8fafc 等硬编码颜色的区域）
+───────────────────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+  }
+}
+.dark {
+  color-scheme: dark;
+}
+
+/* form-input / form-select 暗色 */
+.dark .form-input,
+.dark .form-select {
+  background: #1c1f2e;
+  color: var(--foreground);
+  border-color: var(--border);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .form-input,
+  :root:not(.light) .form-select {
+    background: #1c1f2e;
+    color: var(--foreground);
+    border-color: var(--border);
+  }
+}
+
+/* tag 暗色 */
+.dark .tag {
+  background: #1c1f2e;
+  color: var(--muted);
+  border-color: var(--border);
+}
+.dark .tag:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* skeleton 暗色 */
+.dark .skeleton {
+  background: linear-gradient(90deg, #1c1f2e 25%, #252840 50%, #1c1f2e 75%);
+  background-size: 800px 100%;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   移动端响应式（≤ 640px）
+───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* 全局间距收紧 */
+  body {
+    font-size: 15px;
+  }
+
+  /* 卡片内边距缩小 */
+  .card {
+    border-radius: 10px;
+  }
+
+  /* 按钮在小屏撑满 */
+  .btn-block-mobile {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 标签组允许换行 */
+  .tag-group {
+    gap: 6px;
+  }
+  .tag {
+    font-size: 12px;
+    padding: 5px 11px;
+  }
+
+  /* 表单输入 */
+  .form-input, .form-select {
+    font-size: 16px; /* 防止 iOS 自动缩放 */
+    padding: 9px 12px;
+  }
+
+  /* header 桌面导航隐藏 */
+  .desktop-nav {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   主题切换按钮（放在 layout 里）
+───────────────────────────────────────────────────────────────────────────── */
+.theme-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--card-bg);
+  color: var(--foreground);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 640px) {
+  .theme-toggle {
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}
+

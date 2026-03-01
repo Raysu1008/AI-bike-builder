@@ -1,0 +1,8 @@
+{
+  "band_id": "DRIVETRAIN_105_MECH",
+  "component": "drivetrain",
+  "level": "Shimano 105/mech",
+  "price": { "min": 2000, "max": 3500, "currency": "CNY" },
+  "source": "benchmarks/seed",
+  "last_verified_at": "2026-02-18"
+}

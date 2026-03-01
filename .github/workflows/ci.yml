@@ -1,0 +1,71 @@
+name: CI — 代码检查 & 数据校验
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── 后端类型检查 ─────────────────────────────────────────
+  api-typecheck:
+    name: API TypeScript 检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: TypeScript 类型检查（API）
+        run: pnpm --filter @ai-bike-builder/api exec tsc --noEmit
+
+  # ── 前端类型检查 ─────────────────────────────────────────
+  web-typecheck:
+    name: Web TypeScript 检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: TypeScript 类型检查（Web）
+        run: pnpm --filter web exec tsc --noEmit
+
+  # ── 知识库数据格式校验 ───────────────────────────────────
+  data-validate:
+    name: 知识库 JSON 数据校验
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 校验所有 JSON 文件格式
+        run: node scripts/validate-data.mjs
+
+      - name: 统计知识库条目
+        run: |
+          echo "=== 知识库数据统计 ==="
+          echo "配置模板: $(ls data/templates/*.json | wc -l) 个"
+          echo "定价区间: $(node -e "console.log(JSON.parse(require('fs').readFileSync('data/pricing/bands.json','utf8')).length)") 条"
+          echo "兼容规则: $(node -e "console.log(JSON.parse(require('fs').readFileSync('data/rules/compat-rules.json','utf8')).length)") 条"

@@ -1,0 +1,62 @@
+[
+  {
+    "rule_id": "RIM-TIRE-001",
+    "type": "warning",
+    "description": "窄内宽轮圈搭配宽胎警告",
+    "condition": {
+      "rim_internal_width_mm": { "lte": 19 },
+      "tire_width_c": { "gte": 45 }
+    },
+    "message": "轮圈内宽 {rim_internal_width_mm}mm 不建议搭配 {tire_width_c}C 胎，操控与安全性受影响",
+    "suggestion": "建议使用 ≤42C 胎，或更换内宽 ≥21mm 的轮圈",
+    "enabled": true
+  },
+  {
+    "rule_id": "RIM-TIRE-002",
+    "type": "hard_error",
+    "description": "超宽胎与极窄内宽轮圈不兼容",
+    "condition": {
+      "rim_internal_width_mm": { "lte": 17 },
+      "tire_width_c": { "gte": 50 }
+    },
+    "message": "轮圈内宽 {rim_internal_width_mm}mm 禁止搭配 {tire_width_c}C 及以上胎宽，存在爆胎风险",
+    "suggestion": "请更换轮圈或选择更窄的轮胎",
+    "enabled": true
+  },
+  {
+    "rule_id": "BRAKE-DISC-ROAD-001",
+    "type": "warning",
+    "description": "竞速场景建议液压碟刹",
+    "condition": {
+      "usage": { "includes": "racing" },
+      "brake_type": { "eq": "mechanical_disc" }
+    },
+    "message": "竞速场景下机械碟刹制动力不足，建议升级液压碟刹",
+    "suggestion": "Shimano BR-RS505 或 SRAM Level TL 是入门液压碟刹的良好选择",
+    "enabled": true
+  },
+  {
+    "rule_id": "DRIVETRAIN-GROUPSET-001",
+    "type": "warning",
+    "description": "预算与传动套件等级不匹配",
+    "condition": {
+      "budget_max": { "lt": 6000 },
+      "drivetrain_level": { "includes": "Ultegra" }
+    },
+    "message": "预算 ¥{budget_max} 以内选配 Ultegra 套件后其他配件预算将严重不足",
+    "suggestion": "该预算区间建议选用 Claris 或 Sora 套件",
+    "enabled": true
+  },
+  {
+    "rule_id": "MTB-TIRE-HARDTAIL-001",
+    "type": "warning",
+    "description": "硬尾山地建议 2.2\" 以上胎宽",
+    "condition": {
+      "frame_type": { "eq": "hardtail_mtb" },
+      "tire_width_inch": { "lt": 2.2 }
+    },
+    "message": "硬尾山地前叉无避震补偿，轮胎宽度 {tire_width_inch}\" 过窄，越野抓地力不足",
+    "suggestion": "建议选用 2.25\" 至 2.4\" 的 XC 山地胎",
+    "enabled": true
+  }
+]

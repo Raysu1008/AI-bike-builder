@@ -1,0 +1,10 @@
+{
+  "template_id": "R2-ENDURANCE-8K-12K",
+  "category": "road",
+  "name": "中端耐力公路（8k-12k）",
+  "budget": { "min": 8000, "max": 12000, "currency": "CNY" },
+  "frame_logic": { "type":"endurance_road", "material":["Al","entry_carbon"] },
+  "drivetrain_logic": { "level":["Tiagra","105"], "config":["2x"] },
+  "wheel_logic": { "rim":"Al", "tire_width":"28C-32C" },
+  "brake_logic": { "type":["mechanical_disc"] }
+}

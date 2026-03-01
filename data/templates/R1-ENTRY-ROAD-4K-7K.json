@@ -1,0 +1,10 @@
+{
+  "template_id": "R1-ENTRY-ROAD-4K-7K",
+  "category": "road",
+  "name": "入门竞速公路（4k-7k）",
+  "budget": { "min": 4000, "max": 7000, "currency": "CNY" },
+  "frame_logic": { "type": "race_road", "material": ["Al"] },
+  "drivetrain_logic": { "level": ["Shimano Claris", "Shimano Sora"], "config": ["2x8", "2x9"] },
+  "wheel_logic": { "rim": "Al", "tire_width": "23C-28C" },
+  "brake_logic": { "type": ["rim_brake", "mechanical_disc"] }
+}

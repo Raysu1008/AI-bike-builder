@@ -1,0 +1,10 @@
+{
+  "template_id": "CITY-COMMUTE-3K-6K",
+  "category": "city",
+  "name": "城市通勤车（3k-6k）",
+  "budget": { "min": 3000, "max": 6000, "currency": "CNY" },
+  "frame_logic": { "type": "city_upright", "material": ["Al"] },
+  "drivetrain_logic": { "level": ["Shimano Altus", "internal_hub"], "config": ["1x8", "1x7"] },
+  "wheel_logic": { "rim": "Al", "tire_width": "32C-42C" },
+  "brake_logic": { "type": ["mechanical_disc", "v_brake"] }
+}

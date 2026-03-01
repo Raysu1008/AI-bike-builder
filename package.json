@@ -1,0 +1,21 @@
+{
+  "name": "ai-bike-builder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"pnpm --filter @ai-bike-builder/api dev\" \"pnpm --filter web dev\"",
+    "dev:api": "pnpm --filter @ai-bike-builder/api dev",
+    "dev:web": "pnpm --filter web dev",
+    "validate": "node scripts/validate-data.mjs",
+    "typecheck": "pnpm --filter @ai-bike-builder/api exec tsc --noEmit && pnpm --filter web exec tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

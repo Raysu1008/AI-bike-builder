@@ -1,0 +1,386 @@
+[
+  {
+    "band_id": "FRAME-AL-ENTRY-ROAD",
+    "component": "frame",
+    "level": "铝合金入门公路车架",
+    "price": {
+      "min": 800,
+      "max": 1500,
+      "currency": "CNY"
+    },
+    "source": "domestic-oem-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "FRAME-AL-MID-ROAD",
+    "component": "frame",
+    "level": "铝合金中端公路车架",
+    "price": {
+      "min": 1500,
+      "max": 3000,
+      "currency": "CNY"
+    },
+    "source": "domestic-oem-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "FRAME-CF-ENTRY-ROAD",
+    "component": "frame",
+    "level": "碳纤维入门公路车架",
+    "price": {
+      "min": 3000,
+      "max": 6000,
+      "currency": "CNY"
+    },
+    "source": "domestic-cf-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "FRAME-CF-MID-ROAD",
+    "component": "frame",
+    "level": "碳纤维中端公路车架",
+    "price": {
+      "min": 6000,
+      "max": 12000,
+      "currency": "CNY"
+    },
+    "source": "domestic-cf-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "FRAME-AL-HARDTAIL-MTB",
+    "component": "frame",
+    "level": "铝合金硬尾山地车架",
+    "price": {
+      "min": 600,
+      "max": 2000,
+      "currency": "CNY"
+    },
+    "source": "domestic-oem-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "FRAME-AL-COMMUTE",
+    "component": "frame",
+    "level": "铝合金通勤车架",
+    "price": {
+      "min": 400,
+      "max": 1200,
+      "currency": "CNY"
+    },
+    "source": "domestic-oem-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-CLARIS-MECH",
+    "component": "drivetrain",
+    "level": "Shimano Claris 2×8速",
+    "price": {
+      "min": 500,
+      "max": 800,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-SORA-MECH",
+    "component": "drivetrain",
+    "level": "Shimano Sora 2×9速",
+    "price": {
+      "min": 800,
+      "max": 1200,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-TIAGRA-MECH",
+    "component": "drivetrain",
+    "level": "Shimano Tiagra 2×10速",
+    "price": {
+      "min": 800,
+      "max": 1200,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-105-MECH",
+    "component": "drivetrain",
+    "level": "Shimano 105 R7000 2×11速",
+    "price": {
+      "min": 1500,
+      "max": 2200,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-105-DI2",
+    "component": "drivetrain",
+    "level": "Shimano 105 R7100 Di2 2×12速电变",
+    "price": {
+      "min": 4500,
+      "max": 6000,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-ULTEGRA-MECH",
+    "component": "drivetrain",
+    "level": "Shimano Ultegra R8000 2×11速",
+    "price": {
+      "min": 2500,
+      "max": 3500,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-ULTEGRA-DI2",
+    "component": "drivetrain",
+    "level": "Shimano Ultegra R8100 Di2 2×12速电变",
+    "price": {
+      "min": 7000,
+      "max": 9000,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-DURA-ACE-DI2",
+    "component": "drivetrain",
+    "level": "Shimano Dura-Ace R9200 Di2 2×12速电变",
+    "price": {
+      "min": 14000,
+      "max": 18000,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-GRX-600",
+    "component": "drivetrain",
+    "level": "Shimano GRX 600 1×11速砾石",
+    "price": {
+      "min": 1800,
+      "max": 2500,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-DEORE-M6100",
+    "component": "drivetrain",
+    "level": "Shimano Deore M6100 1×12速山地",
+    "price": {
+      "min": 1200,
+      "max": 1800,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-SLX-M7100",
+    "component": "drivetrain",
+    "level": "Shimano SLX M7100 1×12速山地",
+    "price": {
+      "min": 1800,
+      "max": 2500,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "DRV-XT-M8100",
+    "component": "drivetrain",
+    "level": "Shimano XT M8100 1×12速山地",
+    "price": {
+      "min": 2800,
+      "max": 3800,
+      "currency": "CNY"
+    },
+    "source": "shimano-cn-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "WHEEL-AL-ENTRY",
+    "component": "wheelset",
+    "level": "铝合金入门轮组（OEM）",
+    "price": {
+      "min": 400,
+      "max": 800,
+      "currency": "CNY"
+    },
+    "source": "domestic-wheel-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "WHEEL-AL-DURABLE",
+    "component": "wheelset",
+    "level": "铝合金耐用轮组（手编/强度优先）",
+    "price": {
+      "min": 800,
+      "max": 1500,
+      "currency": "CNY"
+    },
+    "source": "domestic-wheel-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "WHEEL-AL-AERO",
+    "component": "wheelset",
+    "level": "铝合金气动轮组（35-50mm高框）",
+    "price": {
+      "min": 1500,
+      "max": 2800,
+      "currency": "CNY"
+    },
+    "source": "domestic-wheel-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "WHEEL-CF-ENTRY",
+    "component": "wheelset",
+    "level": "碳纤维入门轮组（国产）",
+    "price": {
+      "min": 2500,
+      "max": 4500,
+      "currency": "CNY"
+    },
+    "source": "domestic-cf-wheel-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "WHEEL-CF-AERO",
+    "component": "wheelset",
+    "level": "碳纤维气动轮组（50-60mm高框）",
+    "price": {
+      "min": 4500,
+      "max": 9000,
+      "currency": "CNY"
+    },
+    "source": "domestic-cf-wheel-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "BRAKE-MECH-DISC-ENTRY",
+    "component": "brake",
+    "level": "机械碟刹（入门）",
+    "price": {
+      "min": 150,
+      "max": 350,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "BRAKE-HYD-DISC-MID",
+    "component": "brake",
+    "level": "油压碟刹（中端）",
+    "price": {
+      "min": 400,
+      "max": 900,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "BRAKE-RIM-CALIPER",
+    "component": "brake",
+    "level": "夹器式夹器刹（公路）",
+    "price": {
+      "min": 100,
+      "max": 300,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "SADDLE-ENTRY",
+    "component": "saddle",
+    "level": "入门坐垫",
+    "price": {
+      "min": 80,
+      "max": 200,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "SADDLE-MID",
+    "component": "saddle",
+    "level": "中端竞技坐垫",
+    "price": {
+      "min": 200,
+      "max": 600,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "HANDLEBAR-DROP-AL",
+    "component": "handlebar",
+    "level": "铝合金公路下弯把",
+    "price": {
+      "min": 100,
+      "max": 300,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "HANDLEBAR-DROP-CF",
+    "component": "handlebar",
+    "level": "碳纤维公路下弯把",
+    "price": {
+      "min": 400,
+      "max": 1200,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "FORK-SUSPENSION-100MM",
+    "component": "fork",
+    "level": "前叉减震100mm行程（山地）",
+    "price": {
+      "min": 400,
+      "max": 1200,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  },
+  {
+    "band_id": "FORK-SUSPENSION-120MM",
+    "component": "fork",
+    "level": "前叉减震120mm行程（山地）",
+    "price": {
+      "min": 800,
+      "max": 2500,
+      "currency": "CNY"
+    },
+    "source": "market-survey-2024",
+    "last_verified_at": "2024-11-01"
+  }
+]

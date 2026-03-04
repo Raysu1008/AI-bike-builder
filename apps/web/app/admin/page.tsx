@@ -5,7 +5,7 @@ const API = 'http://localhost:3001/v1';
 
 // ─── 类型 ─────────────────────────────────────────────────────────────────────
 
-type Tab = 'templates' | 'rules' | 'prompts' | 'pricing' | 'sync';
+type Tab = 'templates' | 'rules' | 'prompts' | 'pricing' | 'sync' | 'review' | 'accounts';
 
 interface Template {
   _filename?: string;
@@ -895,6 +895,315 @@ function SyncTab() {
   );
 }
 
+// ─── 审核草稿 Tab ─────────────────────────────────────────────────────────────
+
+type DraftStatus = 'pending' | 'approved' | 'rejected';
+type DraftType   = 'template' | 'rule' | 'pricing_band';
+type DraftAction = 'create' | 'update' | 'delete';
+
+interface Draft {
+  draftId: string;
+  type: DraftType;
+  action: DraftAction;
+  authorId: string;
+  authorName: string;
+  submittedAt: string;
+  status: DraftStatus;
+  reviewedAt?: string;
+  reviewerNote?: string;
+  payload: Record<string, unknown>;
+  targetId?: string;
+}
+
+function ReviewTab() {
+  const [drafts, setDrafts] = useState<Draft[]>([]);
+  const [filter, setFilter] = useState<DraftStatus | 'all'>('pending');
+  const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<Draft | null>(null);
+  const [note, setNote] = useState('');
+  const [status, setStatus] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+
+  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') ?? '' : '';
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const qs = filter !== 'all' ? `?status=${filter}` : '';
+      const res = await fetch(`${API}/drafts/admin/all${qs}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('获取草稿失败，请确认已登录管理员账号');
+      setDrafts(await res.json());
+    } catch (e: unknown) {
+      setStatus({ type: 'err', text: (e as Error).message });
+    } finally {
+      setLoading(false);
+    }
+  }, [filter, token]);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function approve(d: Draft) {
+    const res = await fetch(`${API}/drafts/${d.draftId}/approve`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ note }),
+    });
+    const data = await res.json();
+    if (!res.ok) { setStatus({ type: 'err', text: data.error ?? '操作失败' }); return; }
+    setStatus({ type: 'ok', text: '✅ 已通过，知识库已更新' });
+    setSelected(null); setNote('');
+    load();
+  }
+
+  async function reject(d: Draft) {
+    if (!note.trim()) { alert('请填写拒绝理由'); return; }
+    const res = await fetch(`${API}/drafts/${d.draftId}/reject`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ note }),
+    });
+    const data = await res.json();
+    if (!res.ok) { setStatus({ type: 'err', text: data.error ?? '操作失败' }); return; }
+    setStatus({ type: 'ok', text: '已拒绝该草稿' });
+    setSelected(null); setNote('');
+    load();
+  }
+
+  const typeLabel: Record<DraftType, string> = {
+    template: '配置模板', rule: '兼容规则', pricing_band: '定价区间',
+  };
+  const actionLabel: Record<DraftAction, string> = {
+    create: '新增', update: '修改', delete: '删除',
+  };
+  const statusColors: Record<DraftStatus, string> = {
+    pending: 'amber', approved: 'green', rejected: 'red',
+  };
+  const statusLabel: Record<DraftStatus, string> = {
+    pending: '待审核', approved: '已通过', rejected: '已拒绝',
+  };
+
+  return (
+    <div>
+      <StatusBar msg={status} onClose={() => setStatus(null)} />
+
+      {/* 筛选 + 刷新 */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center' }}>
+        {(['all', 'pending', 'approved', 'rejected'] as const).map(f => (
+          <button key={f} onClick={() => setFilter(f)} style={{
+            padding: '5px 14px', borderRadius: 20, fontSize: 12, fontWeight: filter === f ? 700 : 400,
+            border: `1.5px solid ${filter === f ? 'var(--primary)' : 'var(--border)'}`,
+            background: filter === f ? 'var(--primary-light)' : '#fff',
+            color: filter === f ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer',
+          }}>
+            {f === 'all' ? '全部' : statusLabel[f]}
+          </button>
+        ))}
+        <button onClick={load} style={{ ...ghostBtn, marginLeft: 'auto', padding: '5px 14px', fontSize: 12 }}>🔄 刷新</button>
+      </div>
+
+      {loading && <p style={{ color: 'var(--muted)', fontSize: 13 }}>加载中…</p>}
+      {!loading && drafts.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--muted)' }}>
+          <div style={{ fontSize: 36, marginBottom: 8 }}>📭</div>
+          <p style={{ fontSize: 14 }}>{filter === 'pending' ? '暂无待审核草稿' : '暂无数据'}</p>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {drafts.map(d => (
+          <div key={d.draftId} style={{
+            ...cardStyle, display: 'flex', gap: 16, alignItems: 'flex-start',
+            cursor: 'pointer',
+            borderColor: selected?.draftId === d.draftId ? 'var(--primary)' : undefined,
+          }} onClick={() => { setSelected(d === selected ? null : d); setNote(''); }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 4 }}>
+                <Badge color={statusColors[d.status]}>{statusLabel[d.status]}</Badge>
+                <Badge color="blue">{typeLabel[d.type]}</Badge>
+                <Badge color="gray">{actionLabel[d.action]}</Badge>
+                {d.targetId && <span style={{ fontSize: 11, color: 'var(--muted)', fontFamily: 'monospace' }}>{d.targetId}</span>}
+              </div>
+              <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
+                👤 {d.authorName} &nbsp;·&nbsp; {new Date(d.submittedAt).toLocaleString('zh-CN')}
+              </div>
+              {d.reviewerNote && d.status !== 'pending' && (
+                <div style={{ marginTop: 6, fontSize: 12, background: '#f8fafc', borderRadius: 6, padding: '4px 8px', color: '#475569' }}>
+                  💬 {d.reviewerNote}
+                </div>
+              )}
+            </div>
+            <span style={{ fontSize: 12, color: 'var(--muted)', flexShrink: 0 }}>
+              {selected?.draftId === d.draftId ? '▲ 收起' : '▼ 展开'}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* 详情面板 */}
+      {selected && (
+        <div style={{ marginTop: 16, ...cardStyle, background: '#f8fafc', border: '1.5px solid var(--primary)' }}>
+          <h3 style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 700 }}>📄 草稿内容</h3>
+          <pre style={{
+            background: '#1e1e1e', color: '#d4d4d4', borderRadius: 8, padding: 16,
+            fontSize: 12, overflow: 'auto', maxHeight: 300, lineHeight: 1.6,
+          }}>
+            {JSON.stringify(selected.payload, null, 2)}
+          </pre>
+
+          {selected.status === 'pending' && (
+            <div style={{ marginTop: 16 }}>
+              <FormField label="审核备注（通过时可选，拒绝时必填）">
+                <textarea
+                  value={note}
+                  onChange={e => setNote(e.target.value)}
+                  rows={2}
+                  placeholder="例：数据格式正确，已核实价格区间…"
+                  style={{ ...inputStyle, resize: 'none' }}
+                />
+              </FormField>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button onClick={() => approve(selected)} style={primaryBtn}>✅ 通过并写入知识库</button>
+                <button onClick={() => reject(selected)} style={dangerBtn}>❌ 拒绝</button>
+                <button onClick={() => { setSelected(null); setNote(''); }} style={ghostBtn}>取消</button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── 账号管理 Tab ─────────────────────────────────────────────────────────────
+
+interface UserRecord {
+  userId: string;
+  username: string;
+  displayName: string;
+  email: string;
+  role: 'visitor' | 'advisor' | 'admin';
+  approved: boolean;
+  createdAt: string;
+}
+
+function AccountsTab() {
+  const [users, setUsers] = useState<UserRecord[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+
+  const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') ?? '' : '';
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API}/auth/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('获取用户列表失败，请确认已登录管理员账号');
+      setUsers(await res.json());
+    } catch (e: unknown) {
+      setStatus({ type: 'err', text: (e as Error).message });
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
+
+  useEffect(() => { load(); }, [load]);
+
+  async function approveUser(userId: string) {
+    const res = await fetch(`${API}/auth/users/${userId}/approve`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) { setStatus({ type: 'err', text: '操作失败' }); return; }
+    setStatus({ type: 'ok', text: '账号已审批通过' });
+    load();
+  }
+
+  async function deleteUser(userId: string, name: string) {
+    if (!confirm(`确认删除账号 "${name}"？此操作不可撤销。`)) return;
+    const res = await fetch(`${API}/auth/users/${userId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) { setStatus({ type: 'err', text: '删除失败' }); return; }
+    setStatus({ type: 'ok', text: `账号 ${name} 已删除` });
+    load();
+  }
+
+  const roleColors: Record<string, string> = { admin: 'purple', advisor: 'blue', visitor: 'gray' };
+
+  const pending  = users.filter(u => u.role === 'advisor' && !u.approved);
+  const approved = users.filter(u => u.role !== 'advisor' || u.approved);
+
+  return (
+    <div>
+      <StatusBar msg={status} onClose={() => setStatus(null)} />
+
+      {/* 待审批列表 */}
+      {pending.length > 0 && (
+        <div style={{ marginBottom: 28 }}>
+          <h3 style={{ margin: '0 0 12px', fontSize: 14, fontWeight: 700, color: '#92400e' }}>
+            ⏳ 待审批顾问（{pending.length}）
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {pending.map(u => (
+              <div key={u.userId} style={{
+                ...cardStyle, display: 'flex', alignItems: 'center', gap: 14,
+                background: '#fffbeb', borderColor: '#fde68a',
+              }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{u.displayName}</div>
+                  <div style={{ fontSize: 12, color: 'var(--muted)' }}>
+                    @{u.username} &nbsp;·&nbsp; {u.email} &nbsp;·&nbsp;
+                    注册于 {new Date(u.createdAt).toLocaleDateString('zh-CN')}
+                  </div>
+                </div>
+                <button onClick={() => approveUser(u.userId)} style={primaryBtn}>✅ 批准</button>
+                <button onClick={() => deleteUser(u.userId, u.displayName)} style={dangerBtn}>拒绝删除</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 全部用户列表 */}
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+          <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700 }}>所有账号（{users.length}）</h3>
+          <button onClick={load} style={{ ...ghostBtn, padding: '5px 14px', fontSize: 12 }}>🔄 刷新</button>
+        </div>
+        {loading && <p style={{ color: 'var(--muted)', fontSize: 13 }}>加载中…</p>}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {approved.map(u => (
+            <div key={u.userId} style={{ ...cardStyle, display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                  <Badge color={roleColors[u.role]}>{u.role}</Badge>
+                  {u.role === 'advisor' && (
+                    <Badge color={u.approved ? 'green' : 'amber'}>{u.approved ? '已认证' : '待审批'}</Badge>
+                  )}
+                  <span style={{ fontWeight: 600, fontSize: 14 }}>{u.displayName}</span>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--muted)' }}>
+                  @{u.username} &nbsp;·&nbsp; {u.email} &nbsp;·&nbsp;
+                  {new Date(u.createdAt).toLocaleDateString('zh-CN')}
+                </div>
+              </div>
+              {u.role !== 'admin' && (
+                <button onClick={() => deleteUser(u.userId, u.displayName)} style={{ ...dangerBtn, background: '#fff', color: '#dc2626', border: '1px solid #fecaca', padding: '5px 12px', fontSize: 12 }}>
+                  删除
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── 主页面 ───────────────────────────────────────────────────────────────────
 
 const TABS: { key: Tab; label: string; desc: string }[] = [
@@ -903,6 +1212,8 @@ const TABS: { key: Tab; label: string; desc: string }[] = [
   { key: 'prompts',   label: '🤖 AI 提示词', desc: 'AI 顾问回答风格' },
   { key: 'pricing',   label: '💰 零件定价', desc: '参考价格区间' },
   { key: 'sync',      label: '🔄 外部同步', desc: '对接外部 API 数据源' },
+  { key: 'review',    label: '📝 审核草稿', desc: '顾问提交内容审核' },
+  { key: 'accounts',  label: '👥 账号管理', desc: '顾问注册审批' },
 ];
 
 export default function AdminPage() {
@@ -953,6 +1264,8 @@ export default function AdminPage() {
         {tab === 'prompts'   && <PromptsTab />}
         {tab === 'pricing'   && <PricingTab />}
         {tab === 'sync'      && <SyncTab />}
+        {tab === 'review'    && <ReviewTab />}
+        {tab === 'accounts'  && <AccountsTab />}
       </div>
     </div>
   );

@@ -6,11 +6,13 @@ import exportRouter from './export';
 import authRouter from './auth';
 import adminRouter from './admin';
 import chatRouter from './chat';
+import draftsRouter from './drafts';
 
 const router = Router();
 
 router.use('/auth',   authRouter);
 router.use('/admin',  adminRouter);
+router.use('/drafts', draftsRouter);
 router.use('/bikes',  recommendRouter);
 router.use('/chat',   chatRouter);
 router.use('/compat', compatRouter);
